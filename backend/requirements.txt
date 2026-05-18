@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+supabase
+groq
+python-dotenv
+pandas
+scikit-learn
+xgboost
+numpy
+matplotlib
+httpx
+python-multipart
