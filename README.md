@@ -1,6 +1,6 @@
 # CricVision AI 🏏🤖
 
-CricVision AI is a premium, AI-powered cricket analytics platform that transforms raw match data into intelligent, explainable, and predictive insights.
+CricVision AI is a premium, AI-powered cricket analytics platform that transforms raw cricket match data into intelligent, explainable, and predictive insights.
 
 ## 🚀 Features
 
