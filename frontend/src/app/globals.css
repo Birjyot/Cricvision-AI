@@ -1,144 +1,316 @@
+/* src/app/globals.css */
+
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* ─── Design Tokens ──────────────────────────────────────────────────────────
+ * CricVision dark theme. All colors derived from these variables.
+ * Palette:
+ *   Background  → deep navy / near-black
+ *   Accent 1    → electric teal   (live, active, primary actions)
+ *   Accent 2    → amber           (win probability, warnings, highlights)
+ *   Accent 3    → coral           (wickets, danger states)
+ *   Data        → slate grays     (secondary text, borders, surfaces)
+ * ──────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    /* ── Backgrounds ── */
+    --background:         9 15 30;      /* #090F1E  — main canvas */
+    --background-subtle:  13 20 40;     /* #0D1428  — card/panel bg */
+    --background-raised:  17 26 52;     /* #111A34  — elevated surfaces */
+    --background-overlay: 21 32 64;     /* #152040  — hover states */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+    /* ── Foreground ── */
+    --foreground:         226 232 255;  /* #E2E8FF  — primary text */
+    --foreground-muted:   140 155 190;  /* #8C9BBE  — secondary text */
+    --foreground-faint:   72 90 128;    /* #485A80  — placeholder / disabled */
+
+    /* ── Borders ── */
+    --border:             255 255 255;  /* used at low opacity */
+    --border-subtle:      255 255 255;
+
+    /* ── Accent: Teal — live, active, primary CTAs ── */
+    --teal:               0 217 166;    /* #00D9A6 */
+    --teal-dim:           0 167 128;    /* #00A780 */
+    --teal-glow:          0 217 166;    /* used for glow effects */
+
+    /* ── Accent: Amber — win probability, warnings ── */
+    --amber:              245 158 11;   /* #F59E0B */
+    --amber-dim:          180 115 7;    /* #B47307 */
+
+    /* ── Accent: Coral — wickets, danger ── */
+    --coral:              255 95 87;    /* #FF5F57 */
+    --coral-dim:          200 60 54;    /* #C83C36 */
+
+    /* ── Accent: Indigo — predictions, ML outputs ── */
+    --indigo:             99 102 241;   /* #6366F1 */
+    --indigo-dim:         67 70 190;    /* #4346BE */
+
+    /* ── Score / Stats data color (used for live numbers) ── */
+    --score:              255 255 255;  /* pure white for max contrast */
+
+    /* ── Semantic ── */
+    --success:            34 197 94;    /* green */
+    --warning:            245 158 11;   /* amber */
+    --destructive:        239 68 68;    /* red */
+
+    /* ── Radius ── */
+    --radius:             0.5rem;
+    --radius-lg:          0.75rem;
+    --radius-xl:          1rem;
+
+    /* ── Font families ── */
+    --font-sans:          var(--font-syne), system-ui, sans-serif;
+    --font-mono:          var(--font-mono), "Fira Code", monospace;
+
+    /* ── Transitions ── */
+    --transition-fast:    150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base:    250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow:    400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ─── Mapped to shadcn/ui tokens ─────────────────────────────────────── */
+    --card:               var(--background-subtle);
+    --card-foreground:    var(--foreground);
+    --popover:            var(--background-raised);
+    --popover-foreground: var(--foreground);
+    --primary:            var(--teal);
+    --primary-foreground: 9 15 30;
+    --secondary:          var(--background-overlay);
+    --secondary-foreground:var(--foreground);
+    --muted:              var(--background-raised);
+    --muted-foreground:   var(--foreground-muted);
+    --accent:             var(--background-overlay);
+    --accent-foreground:  var(--foreground);
+    --ring:               var(--teal);
+    --input:              var(--background-raised);
+  }
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
+/* ─── Base Styles ─────────────────────────────────────────────────────────── */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: rgba(var(--border), 0.15);
+    box-sizing: border-box;
   }
-  body {
-    @apply bg-[#020617] text-slate-200 antialiased;
-  }
+
   html {
-    @apply font-sans;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  /* Score / stat numbers use the mono font for alignment */
+  .font-score,
+  [data-score],
+  .tabular-nums {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: rgb(var(--foreground));
+    line-height: 1.2;
   }
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+/* ─── Custom Scrollbar ────────────────────────────────────────────────────── */
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 9999px;
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--border), 0.15);
+  border-radius: 99px;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--teal), 0.4);
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--border), 0.15) transparent;
+}
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(var(--teal), 0.25);
+  color: rgb(var(--foreground));
+}
+
+/* ─── Focus Ring ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(var(--teal), 0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Recharts Dark Mode Overrides ───────────────────────────────────────── */
+/*
+ * Recharts renders light-mode-only colors by default.
+ * These overrides bring it in line with the CricVision dark theme.
+ */
+
+/* Grid lines */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(var(--border), 0.08) !important;
+}
+
+/* Axis tick labels */
+.recharts-cartesian-axis-tick text,
+.recharts-polar-angle-axis-tick text,
+.recharts-polar-radius-axis-tick text {
+  fill: rgb(var(--foreground-muted)) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+}
+
+/* Axis lines */
+.recharts-cartesian-axis-line {
+  stroke: rgba(var(--border), 0.1) !important;
+}
+
+/* Tooltip */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: rgb(var(--background-raised)) !important;
+  border: 1px solid rgba(var(--border), 0.15) !important;
+  border-radius: var(--radius) !important;
+  padding: 8px 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+.recharts-tooltip-label {
+  color: rgb(var(--foreground)) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  margin-bottom: 4px !important;
+}
+.recharts-tooltip-item {
+  color: rgb(var(--foreground-muted)) !important;
+  font-size: 12px !important;
+  font-family: var(--font-mono) !important;
+}
+.recharts-tooltip-item-value {
+  color: rgb(var(--foreground)) !important;
+  font-weight: 600 !important;
+}
+
+/* Legend */
+.recharts-legend-item-text {
+  color: rgb(var(--foreground-muted)) !important;
+  font-size: 12px !important;
+}
+
+/* Radar chart polar grid */
+.recharts-polar-grid-concentric-polygon,
+.recharts-polar-grid-angle line {
+  stroke: rgba(var(--border), 0.1) !important;
+}
+
+/* ─── Utility Classes ─────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Live pulse dot */
+  .live-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-[rgb(var(--coral))];
+    animation: pulse-live 1.4s ease-in-out infinite;
+  }
+
+  /* Subtle card glow on hover — used for match cards */
+  .card-glow {
+    transition: box-shadow var(--transition-base);
+  }
+  .card-glow:hover {
+    box-shadow: 0 0 0 1px rgba(var(--teal), 0.3),
+                0 8px 32px rgba(var(--teal), 0.06);
+  }
+
+  /* Score number display */
+  .score-display {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Teal accent text */
+  .text-teal     { color: rgb(var(--teal)); }
+  .text-amber    { color: rgb(var(--amber)); }
+  .text-coral    { color: rgb(var(--coral)); }
+  .text-indigo   { color: rgb(var(--indigo)); }
+  .text-muted    { color: rgb(var(--foreground-muted)); }
+  .text-faint    { color: rgb(var(--foreground-faint)); }
+
+  /* Background utilities */
+  .bg-subtle     { background-color: rgb(var(--background-subtle)); }
+  .bg-raised     { background-color: rgb(var(--background-raised)); }
+  .bg-overlay    { background-color: rgb(var(--background-overlay)); }
+
+  /* Border utilities */
+  .border-faint  { border-color: rgba(var(--border), 0.08); }
+  .border-subtle { border-color: rgba(var(--border), 0.12); }
+  .border-teal   { border-color: rgba(var(--teal), 0.3); }
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────────── */
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.animate-slide-up { animation: slide-up 0.3s var(--transition-base) both; }
+.animate-fade-in  { animation: fade-in  0.25s ease both; }
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--background-raised))  0%,
+    rgb(var(--background-overlay)) 50%,
+    rgb(var(--background-raised))  100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius);
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .live-dot {
+    animation: none;
+  }
 }
